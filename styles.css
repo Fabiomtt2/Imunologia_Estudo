@@ -31,3 +31,92 @@ details{background:#101a37;border:1px solid #293a72;border-radius:16px;padding:1
 /* Premium QA additions */
 .quiz label{display:block;padding:9px 11px;margin:7px 0;border:1px solid #2b3c72;border-radius:12px;background:#0f1832;transition:.2s}.quiz label:hover{border-color:#5270c7;background:#142147}.quiz label.choice-ok{border-color:#46c995;background:#103c35}.quiz label.choice-bad{border-color:#ef7181;background:#3a1722}.feedback{display:none;margin-top:12px;padding:12px 14px;border-radius:13px;background:#111e40;border:1px solid #31529b}.feedback .why{margin-top:8px;padding-top:8px;border-top:1px solid #2e477f;color:#dce7ff}.visual-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.visual-pair figure{margin:0}.concept-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}.concept-step{padding:13px;border-radius:16px;background:linear-gradient(180deg,#172852,#101a38);border:1px solid #304781;position:relative}.concept-step b{display:block;color:#fff;margin-bottom:5px}.concept-step small{color:#bac8e7}.premium-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:#182951;border:1px solid #365298;color:#dfeaff;font-size:.76rem;font-weight:800}.chapter-end{margin-top:20px;padding:15px;border-radius:18px;background:linear-gradient(135deg,#14254e,#101833);border:1px solid #314a8e;display:flex;justify-content:space-between;gap:12px;align-items:center}.chapter-end a{font-weight:800}.source-stack{display:grid;gap:8px}.source-stack div{padding:10px;border-radius:12px;background:#0f1833;border:1px solid #2b3c73;color:#dbe5fb;font-size:.88rem}
 @media(max-width:900px){.visual-pair,.concept-strip{grid-template-columns:1fr 1fr}}@media(max-width:620px){.visual-pair,.concept-strip{grid-template-columns:1fr}}
+
+/* =========================================================
+   Accessibility + resilient navigation patch (v1.2)
+   Keeps a navigation escape hatch visible at high zoom/font.
+   ========================================================= */
+html{color-scheme:dark}
+html.light{color-scheme:light}
+body{font-size:var(--reader-font-size,16px);padding-bottom:78px}
+
+.navdock{
+  position:fixed;z-index:1200;left:50%;bottom:14px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:7px;padding:8px;
+  max-width:calc(100vw - 20px);overflow-x:auto;
+  background:rgba(11,20,43,.96);border:1px solid #385299;border-radius:17px;
+  box-shadow:0 14px 38px rgba(0,0,0,.48);backdrop-filter:blur(14px)
+}
+.navdock button,.navdock a{
+  border:1px solid #324985;background:#16244a;color:#f4f7ff;
+  min-height:40px;padding:8px 11px;border-radius:11px;white-space:nowrap;
+  font-size:.84rem;font-weight:850;cursor:pointer;display:inline-flex;align-items:center;justify-content:center
+}
+.navdock button:hover,.navdock a:hover{background:#203363;border-color:#5574cc}
+.navdock .navdock-home{color:#dff2ff}.navdock .navdock-menu{border-color:#4a6bc3;background:#1a3165}
+.navdock .font-reset{min-width:42px}
+.nav-backdrop{display:none;position:fixed;inset:0;z-index:1090;background:rgba(2,7,18,.62);backdrop-filter:blur(2px)}
+.nav-backdrop.open{display:block}
+.sidebar{transition:transform .22s ease,box-shadow .22s ease}
+
+/* Larger internal font deliberately switches to reader layout.
+   This prevents 3-column compression even on a wide monitor. */
+html.font-large .app{grid-template-columns:minmax(0,1fr);max-width:1220px}
+html.font-large .rightbar{display:none}
+html.font-large .sidebar{
+  position:fixed;z-index:1150;left:14px;top:14px;bottom:84px;height:auto;
+  width:min(88vw,360px);transform:translateX(calc(-100% - 30px));
+  overscroll-behavior:contain
+}
+html.font-large .sidebar.nav-open{transform:translateX(0);box-shadow:0 26px 70px rgba(0,0,0,.62)}
+html.font-large .split,html.font-large .hero-grid{grid-template-columns:1fr}
+html.font-large .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+html.font-large .section p{max-width:78ch}
+
+/* High-zoom / narrow viewport: sidebar becomes a drawer instead of moving to
+   the top of a very long document. */
+@media(max-width:1050px){
+  .app{grid-template-columns:minmax(0,1fr);max-width:1180px;padding:12px}
+  .rightbar{display:none}
+  .sidebar{
+    position:fixed;z-index:1150;left:12px;top:12px;bottom:82px;height:auto;
+    width:min(90vw,360px);transform:translateX(calc(-100% - 26px));
+    overscroll-behavior:contain
+  }
+  .sidebar.nav-open{transform:translateX(0);box-shadow:0 26px 70px rgba(0,0,0,.62)}
+  .split,.hero-grid{grid-template-columns:1fr}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:700px){
+  body{padding-bottom:72px}
+  .navdock{left:8px;right:8px;bottom:8px;transform:none;justify-content:space-between}
+  .navdock button,.navdock a{padding:8px 9px;font-size:.78rem;flex:0 0 auto}
+  .navdock .font-reset{display:none}
+  .grid3,.grid2,.flashrow,.grid4,.visual-pair,.concept-strip{grid-template-columns:1fr}
+  .hero h2{font-size:1.72rem}
+  .section{padding:16px;border-radius:18px}
+  .table{min-width:620px}
+}
+
+@media(max-width:420px){
+  .navdock .nav-label{display:none}
+  .navdock button,.navdock a{min-width:42px;padding:8px}
+}
+
+/* Dark-mode contrast repairs */
+html:not(.light) .sidebar,html:not(.light) .rightbar{background:rgba(12,20,43,.96)}
+html:not(.light) .section{background:#111c3a}
+html:not(.light) .card{background:#18264d}
+html:not(.light) .quiz label{background:#101b39;color:#edf4ff}
+html:not(.light) details{background:#0f1935}
+html:not(.light) input[type="radio"]{accent-color:#6abaff}
+
+/* Light-mode equivalents for persistent controls */
+html.light .navdock{background:rgba(249,252,255,.97);border-color:#b8c9e8;box-shadow:0 12px 32px rgba(40,62,105,.22)}
+html.light .navdock button,html.light .navdock a{background:#eef4ff;border-color:#c4d2ec;color:#17243d}
+html.light .navdock button:hover,html.light .navdock a:hover{background:#e0ebff;border-color:#8fa9da}
+html.light .nav-backdrop{background:rgba(48,62,88,.28)}
+
+/* Focus mode must never trap the reader: navdock stays visible. */
+.focus .navdock{display:flex}

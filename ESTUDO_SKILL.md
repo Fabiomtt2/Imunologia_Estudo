@@ -316,17 +316,23 @@ Quando o produto final for um webapp:
 Um capítulo principal por página reduz fadiga e facilita retomada.
 
 ### 9.2 Componentes recomendados
-- sidebar persistente;
+- sidebar persistente em desktop e **gaveta acessível** quando o espaço diminuir;
+- **barra de navegação de emergência sempre visível** (Menu, Voltar e Início), independente da sidebar;
 - progresso local;
 - busca de capítulos;
 - modo claro/escuro;
-- modo foco;
-- ajuste de tamanho de fonte;
+- modo foco com rota explícita para sair;
+- ajuste de tamanho de fonte persistente;
 - navegação anterior/próximo;
 - índice interno da página;
 - questões interativas;
 - feedback imediato;
 - funcionamento sem internet depois de baixado.
+
+### 9.2.1 Regra de resiliência de navegação
+A navegação nunca pode depender de um único componente. Se a sidebar for escondida por breakpoint, zoom, fonte grande ou modo foco, deve existir outra rota fixa para **Menu / Voltar / Início**.
+
+Aumentar a fonte não deve apenas ampliar texto dentro de três colunas comprimidas. A partir de um limiar de leitura, o layout deve migrar deliberadamente para uma coluna e transformar menus laterais em gavetas.
 
 ### 9.3 Abertura local
 O conteúdo essencial deve funcionar abrindo `index.html` diretamente sempre que tecnicamente possível.
@@ -399,11 +405,16 @@ Separar por mudanças significativas:
 - nenhum capítulo duplicado?
 
 ### Visual
-- contraste adequado?
+- contraste adequado em **modo claro e escuro**?
 - tipografia consistente?
 - imagens sem corte?
 - conteúdo legível em desktop e tela menor?
 - caixas coloridas usam a mesma semântica em todas as páginas?
+- layout testado com fonte/zoom equivalente a **100%, 125%, 150% e 175%**?
+- em todas essas escalas existe rota visível para **Menu, Voltar e Início**?
+- fonte grande aciona layout de leitura em vez de comprimir colunas?
+- sidebar vira gaveta quando necessário, em vez de migrar para o topo de uma página longa?
+- modo foco possui saída óbvia e persistente?
 
 ### Interatividade
 - quizzes corrigem corretamente?
@@ -448,6 +459,9 @@ Uma execução `/estudo` não deve:
 - apresentar pesquisa externa como conteúdo do professor;
 - acrescentar “curiosidades” que afastam do escopo;
 - usar imagens bonitas sem função pedagógica;
+- esconder a única navegação ao aumentar fonte, zoom ou entrar em modo foco;
+- confiar apenas em breakpoints de largura sem testar acessibilidade tipográfica;
+- exigir servidor local para conteúdo que poderia funcionar diretamente por `file://`;
 - repetir o mesmo layout de card em todas as seções;
 - gerar questões sem explicar distratores;
 - entregar múltiplas versões conflitantes;
