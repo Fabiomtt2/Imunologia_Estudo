@@ -24,3 +24,11 @@
 - `start.bat` simplificado: agora abre o webapp diretamente e não depende de Python.
 - `start-server.bat` separado para PWA/servidor opcional.
 - Service worker atualizado para cache v1.2.0, remoção automática de caches antigos e network-first para HTML/CSS/JS.
+
+## 1.3.0 — Legibilidade dos infográficos
+- Corrige infográficos textuais comprimidos em meia coluna.
+- Figuras pedagógicas dentro de capítulos passam a ocupar a largura integral de leitura.
+- Adiciona visualizador em tela cheia preservando a resolução nativa do PNG.
+- Controles: Ajustar, zoom +/−, 100% real e abertura do PNG original.
+- Clique direto na imagem também abre o visualizador.
+- Regra adicionada à `/estudo`: nenhum infográfico com texto pode depender de redução abaixo do limiar de legibilidade.

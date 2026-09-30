@@ -120,3 +120,125 @@ html.light .nav-backdrop{background:rgba(48,62,88,.28)}
 
 /* Focus mode must never trap the reader: navdock stays visible. */
 .focus .navdock{display:flex}
+
+/* === v1.3.0 — INFROGRAPHIC LEGIBILITY / IMAGE THEATER =====================
+   Text-heavy pedagogical infographics must never be squeezed into a half-column.
+   They occupy the whole reading column and can be opened at native resolution.
+============================================================================= */
+.section .split:has(> figure.figure) > :not(figure.figure),
+.section .split:has(> .figure) > :not(.figure){
+  grid-column:1 / -1;
+}
+.section .split > figure.figure,
+.section .split > .figure{
+  grid-column:1 / -1;
+  width:100%;
+}
+.figure{
+  position:relative;
+  overflow:visible;
+}
+.figure img{
+  width:100%;
+  max-width:none;
+  cursor:zoom-in;
+}
+.figure-tools{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  justify-content:flex-end;
+  margin-top:10px;
+}
+.figure-tools button,
+.figure-tools a{
+  appearance:none;
+  border:1px solid #36529a;
+  background:linear-gradient(180deg,#1a2d5f,#13244c);
+  color:#edf4ff;
+  padding:8px 11px;
+  border-radius:11px;
+  font-weight:800;
+  font-size:.82rem;
+  cursor:pointer;
+}
+.figure-tools button:hover,
+.figure-tools a:hover{border-color:#6fa7ff;background:#203a76}
+.light .figure-tools button,
+.light .figure-tools a{background:#edf3ff;color:#18315f;border-color:#b8c9ed}
+
+.image-theater{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:none;
+  grid-template-rows:auto 1fr;
+  background:rgba(2,7,18,.96);
+  backdrop-filter:blur(10px);
+}
+.image-theater.open{display:grid}
+.image-theater-toolbar{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  padding:10px 12px;
+  border-bottom:1px solid rgba(255,255,255,.13);
+  background:#0c1530;
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+.image-theater-toolbar .spacer{flex:1}
+.image-theater-toolbar button,
+.image-theater-toolbar a{
+  appearance:none;
+  border:1px solid #38569d;
+  background:#172958;
+  color:#f2f6ff;
+  min-height:38px;
+  padding:7px 11px;
+  border-radius:10px;
+  font-weight:800;
+  cursor:pointer;
+}
+.image-theater-toolbar .zoom-readout{
+  min-width:58px;
+  text-align:center;
+  color:#dce8ff;
+  font-weight:800;
+}
+.image-theater-stage{
+  overflow:auto;
+  overscroll-behavior:contain;
+  padding:24px;
+  text-align:center;
+}
+.image-theater-stage img{
+  display:inline-block;
+  max-width:none;
+  width:auto;
+  height:auto;
+  border-radius:10px;
+  box-shadow:0 20px 65px rgba(0,0,0,.55);
+  cursor:grab;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.image-theater-stage img:active{cursor:grabbing}
+body.theater-open{overflow:hidden}
+
+/* Hero infographics also get more room at common desktop widths. */
+@media(min-width:1261px){
+  .hero-grid:has(.figure img){grid-template-columns:minmax(0,.78fr) minmax(640px,1.22fr)}
+}
+@media(max-width:1260px){
+  .section .split:has(figure.figure),
+  .section .split:has(.figure){grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .image-theater-stage{padding:10px}
+  .image-theater-toolbar{gap:5px;flex-wrap:wrap}
+  .image-theater-toolbar button,.image-theater-toolbar a{padding:6px 8px;font-size:.78rem}
+  .figure-tools{justify-content:flex-start}
+}

@@ -479,3 +479,10 @@ O produto é premium quando combina:
 **rigor da fonte + organização editorial + design funcional + ilustrações úteis + texto agradável + recuperação ativa + aplicação prática + QA + portabilidade.**
 
 A métrica final é simples: o estudante deve conseguir **entender primeiro, lembrar depois e reconhecer o mecanismo em uma questão nova**.
+
+## Regra de legibilidade de infográficos (aprendizado v1.3)
+- Imagem didática com texto embutido nunca deve ser tratada como miniatura decorativa.
+- Em webapp, infográficos textuais devem ter uma faixa de largura integral no fluxo de leitura, mesmo quando o texto explicativo usa duas colunas.
+- Toda figura densa deve oferecer ampliação em resolução nativa, zoom e abertura do asset original.
+- O QA deve testar a legibilidade do menor texto do infográfico no tamanho de exibição padrão; se exigir esforço visual, a composição falhou mesmo que o arquivo-fonte esteja em alta resolução.
+- Não confundir compressão de arquivo com compressão de layout: PNG pode estar íntegro e ainda assim ser ilegível quando CSS o reduz para meia coluna.

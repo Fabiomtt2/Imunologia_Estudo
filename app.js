@@ -93,3 +93,111 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();});
 window.addEventListener('resize',()=>{if(window.innerWidth>1050&&!document.documentElement.classList.contains('font-large'))closeSidebar();});
 
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+
+/* === v1.3.0 — native-resolution image theater ============================ */
+(function(){
+  let theater, stage, theaterImg, readout, originalLink;
+  let scale=1;
+  let naturalW=0, naturalH=0;
+
+  function ensureTheater(){
+    if(theater) return;
+    theater=document.createElement('div');
+    theater.className='image-theater';
+    theater.setAttribute('role','dialog');
+    theater.setAttribute('aria-modal','true');
+    theater.setAttribute('aria-label','Visualizador ampliado do infográfico');
+    theater.innerHTML=`
+      <div class="image-theater-toolbar">
+        <button type="button" data-act="close">✕ Fechar</button>
+        <button type="button" data-act="fit">Ajustar</button>
+        <button type="button" data-act="minus">−</button>
+        <span class="zoom-readout">100%</span>
+        <button type="button" data-act="plus">+</button>
+        <button type="button" data-act="native">100% real</button>
+        <span class="spacer"></span>
+        <a data-act="original" target="_blank" rel="noopener">Abrir PNG original ↗</a>
+      </div>
+      <div class="image-theater-stage"><img alt="Infográfico ampliado"></div>`;
+    document.body.appendChild(theater);
+    stage=theater.querySelector('.image-theater-stage');
+    theaterImg=stage.querySelector('img');
+    readout=theater.querySelector('.zoom-readout');
+    originalLink=theater.querySelector('[data-act="original"]');
+    theater.querySelector('[data-act="close"]').onclick=closeImageTheater;
+    theater.querySelector('[data-act="fit"]').onclick=fitImageTheater;
+    theater.querySelector('[data-act="native"]').onclick=()=>setImageScale(1);
+    theater.querySelector('[data-act="plus"]').onclick=()=>setImageScale(scale*1.25);
+    theater.querySelector('[data-act="minus"]').onclick=()=>setImageScale(scale/1.25);
+    theater.addEventListener('click',e=>{ if(e.target===theater) closeImageTheater(); });
+    document.addEventListener('keydown',e=>{
+      if(!theater.classList.contains('open')) return;
+      if(e.key==='Escape') closeImageTheater();
+      if(e.key==='+' || e.key==='=') setImageScale(scale*1.25);
+      if(e.key==='-') setImageScale(scale/1.25);
+      if(e.key==='0') fitImageTheater();
+    });
+  }
+
+  function setImageScale(next){
+    if(!theaterImg || !naturalW) return;
+    scale=Math.min(4,Math.max(.35,next));
+    theaterImg.style.width=Math.round(naturalW*scale)+'px';
+    theaterImg.style.height=Math.round(naturalH*scale)+'px';
+    readout.textContent=Math.round(scale*100)+'%';
+  }
+
+  function fitImageTheater(){
+    if(!naturalW || !naturalH) return;
+    const availW=Math.max(320,stage.clientWidth-28);
+    const availH=Math.max(260,stage.clientHeight-28);
+    setImageScale(Math.min(1,availW/naturalW,availH/naturalH));
+    stage.scrollTo({left:0,top:0});
+  }
+
+  function openImageTheater(img){
+    ensureTheater();
+    const src=img.currentSrc || img.src;
+    theaterImg.src=src;
+    theaterImg.alt=img.alt || 'Infográfico ampliado';
+    originalLink.href=src;
+    const ready=()=>{
+      naturalW=theaterImg.naturalWidth || 1536;
+      naturalH=theaterImg.naturalHeight || 1024;
+      theater.classList.add('open');
+      document.body.classList.add('theater-open');
+      fitImageTheater();
+      theater.querySelector('[data-act="close"]').focus();
+    };
+    if(theaterImg.complete) ready(); else theaterImg.onload=ready;
+  }
+
+  window.closeImageTheater=function(){
+    if(!theater) return;
+    theater.classList.remove('open');
+    document.body.classList.remove('theater-open');
+  };
+  window.fitImageTheater=fitImageTheater;
+
+  function enhanceFigures(){
+    document.querySelectorAll('.figure img').forEach(img=>{
+      img.setAttribute('title','Clique para ampliar em resolução original');
+      img.addEventListener('click',()=>openImageTheater(img));
+      const fig=img.closest('.figure');
+      if(!fig || fig.querySelector('.figure-tools')) return;
+      const tools=document.createElement('div');
+      tools.className='figure-tools';
+      const zoom=document.createElement('button');
+      zoom.type='button'; zoom.textContent='🔍 Ampliar infográfico';
+      zoom.addEventListener('click',()=>openImageTheater(img));
+      const original=document.createElement('a');
+      original.href=img.getAttribute('src'); original.target='_blank'; original.rel='noopener';
+      original.textContent='↗ Abrir resolução original';
+      tools.append(zoom,original);
+      fig.appendChild(tools);
+    });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',enhanceFigures);
+  else enhanceFigures();
+})();

@@ -78,3 +78,6 @@ No modo direto (`index.html`), service worker não é usado.
 - **Vermelho:** erro/armadilha.
 - **Dourado:** memória/mnemônico.
 - **Violeta:** fonte, auditoria ou integração.
+
+### Imagens e infográficos (v1.3.0)
+Os infográficos com texto agora ocupam a largura inteira do capítulo. Clique na imagem ou em **🔍 Ampliar infográfico** para abrir o visualizador em tela cheia. Dentro dele, use **Ajustar**, **+**, **−** ou **100% real**. O link **Abrir PNG original** mostra o arquivo-fonte sem reamostragem pelo layout.
