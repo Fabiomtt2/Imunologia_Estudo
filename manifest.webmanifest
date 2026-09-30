@@ -1,0 +1,10 @@
+{
+  "name":"Imunologia AV1 Premium",
+  "short_name":"ImunoMed AV1",
+  "description":"Webapp offline de estudo de Imunologia para AV1, baseado no material da disciplina.",
+  "start_url":"index.html",
+  "display":"standalone",
+  "background_color":"#09101f",
+  "theme_color":"#09101f",
+  "lang":"pt-BR"
+}
