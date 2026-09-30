@@ -21,3 +21,6 @@
 - Layout de fonte grande migra para uma coluna para evitar compressão.
 - Contraste do modo escuro reforçado em cards, quizzes e painéis.
 - `/estudo` passa a exigir QA em múltiplas escalas de fonte/zoom e rota de fuga permanente.
+- `start.bat` simplificado: agora abre o webapp diretamente e não depende de Python.
+- `start-server.bat` separado para PWA/servidor opcional.
+- Service worker atualizado para cache v1.2.0, remoção automática de caches antigos e network-first para HTML/CSS/JS.

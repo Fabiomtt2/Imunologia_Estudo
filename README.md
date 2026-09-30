@@ -1,52 +1,75 @@
-# Imunologia AV1 Premium
+# Imunologia AV1 Premium — v1.2.0
 
 Webapp multipágina de estudo, baseado no material original da disciplina.
 
-## Abrir no Windows 11 — método mais simples
+## Windows 11 — abra assim
 
-1. **Descompacte a pasta inteira**. Não abra o `index.html` de dentro do ZIP.
-2. Dê duplo clique em **`ABRIR-DIRETO.bat`** ou diretamente em **`index.html`**.
+1. **Descompacte a pasta inteira**. Não execute arquivos de dentro do ZIP.
+2. Dê duplo clique em **`start.bat`**.
 
-Esse modo já permite estudar normalmente: texto, imagens, navegação, quizzes, tema, modo foco, ajuste de fonte e progresso local.
+`start.bat` agora faz apenas o que é necessário para estudar: abre `index.html` no navegador padrão. **Não precisa de Python, Node, servidor, PowerShell especial ou instalação adicional.**
 
-## Modo servidor / PWA — opcional
+Também é válido abrir `index.html` diretamente.
 
-Use `start.bat` apenas se quiser o comportamento de aplicativo web local (service worker/cache PWA e instalação mais previsível).
+### Se estiver usando PowerShell
 
-- Dê duplo clique em **`start.bat`**; ou
-- no PowerShell, dentro da pasta, rode:
+O PowerShell exige `./` ou `.\\` para executar um arquivo da pasta atual:
 
 ```powershell
 .\start.bat
 ```
 
-O launcher novo **não exige Python**. Ele tenta `py`, `python` ou `python3`; se nenhum existir, usa um servidor HTTP implementado em PowerShell/.NET.
+Digitar apenas `start.bat` pode não funcionar dependendo da configuração do PowerShell.
 
-### Se o `start.bat` não abrir
+## Servidor/PWA — opcional
 
-Execute diretamente:
+Somente se quiser testar instalação PWA/service worker, execute:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\start.ps1
+.\start-server.bat
 ```
 
-O navegador só é aberto depois de o servidor responder. Se a porta 8000 estiver ocupada, o launcher procura automaticamente uma porta livre até 8099.
+Esse modo tenta `py`, `python` ou `python3`. Se Python não estiver disponível ou o servidor falhar, `start.ps1` abre automaticamente o modo direto.
 
-## Por que eu havia recomendado não abrir apenas pelo `index.html`?
+Para **estudar**, o servidor não traz conteúdo adicional e não é necessário.
 
-Não porque o conteúdo dependa de servidor. A recomendação anterior era apenas para ativar o **service worker/PWA**, que navegadores bloqueiam em `file://`. Para estudar, abrir `index.html` diretamente é válido e agora é o método principal recomendado.
+## Navegação resistente a fonte grande e zoom
 
-## O que está incluído
+A versão 1.2.0 adiciona uma barra inferior permanente:
+
+- **☰ Menu** — abre a navegação de capítulos;
+- **← Voltar** — retorna à página anterior;
+- **⌂ Início** — volta ao índice;
+- **A− / A / A+** — diminui, restaura ou aumenta a fonte.
+
+Quando a fonte fica grande ou o zoom reduz o espaço disponível, a sidebar deixa de comprimir a página e vira uma **gaveta lateral**. Assim o menu continua acessível durante toda a leitura.
+
+O tamanho escolhido é salvo no navegador. `A` restaura a fonte padrão.
+
+## Modo escuro e modo foco
+
+O modo escuro recebeu reforço de contraste em cards, quizzes e painéis. O modo foco pode esconder as barras laterais, mas a barra inferior permanece visível para evitar que o leitor fique preso sem navegação.
+
+## Se você já abriu uma versão antiga pelo servidor/PWA
+
+A v1.2.0 muda o cache e remove versões antigas automaticamente. Se o navegador ainda mostrar o layout anterior:
+
+1. pressione **Ctrl + Shift + R** uma vez; ou
+2. feche a aba e abra `start.bat` novamente.
+
+No modo direto (`index.html`), service worker não é usado.
+
+## Conteúdo incluído
 
 - Partes 1–7 do escopo da AV1;
 - vacinação básica relevante à Aula 6;
-- Parte 16 (ativação B ampliada/centro germinativo);
-- Parte 17 (atividades do professor e casos de marcadores);
+- Parte 16 — ativação B ampliada/centro germinativo;
+- Parte 17 — atividades do professor e casos de marcadores;
 - prova final de 10 pontos com gabarito comentado;
 - 10 infográficos originais;
 - `material-base.pdf` para consulta;
-- `ESTUDO_SKILL.md` como especificação reutilizável do método `/estudo`;
-- launchers Windows direto e servidor (`ABRIR-DIRETO.bat`, `start.bat`, `start.ps1`).
+- `ESTUDO_SKILL.md` — especificação reutilizável do método `/estudo`;
+- `AUDITORIA_E_FONTES.md` — distinção entre material-base, auditoria e expansão.
 
 ## Legenda visual
 
